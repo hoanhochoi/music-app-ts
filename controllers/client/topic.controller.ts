@@ -9,6 +9,7 @@ export const  topics = async (req: Request, res: Response)=>{
     console.log(topics)
     
     res.render("client/pages/topics/index",{
-        pageTitle: "chủ đề bài hát"
+        pageTitle: "chủ đề bài hát",
+        toppics: topics
     })
 }
