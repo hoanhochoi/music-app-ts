@@ -27,4 +27,26 @@ if(aplayer){
 }
 // end aplayer
 
+// like
+const buttonLike = document.querySelector("[button-like]");
+if(buttonLike){
+    buttonLike.addEventListener("click",()=>{
+    const id = buttonLike.getAttribute("button-like");
+    const isActive = buttonLike.classList.contains("active")
+    const typeLike = isActive == false ? "like" : "dislike";
+    const link = `/songs/like/${typeLike}/${id}`;
+    const option = {
+        method: "PATCH"
+    }
+    fetch(link,option) // cần gửi method path truyền 2 tham số còn get thì cần link thôi
+        .then(res => res.json())
+        .then(data =>{
+            const span = buttonLike.querySelector("span");
+            span.innerHTML = `${data.like} thích`
+            buttonLike.classList.toggle("active");
+        })
+    })
+}
+// end like
+
 console.log("oke")
