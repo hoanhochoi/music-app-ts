@@ -15,11 +15,11 @@ app.set("views","./views")
 app.set("view engine","pug")
 
 clientRoutes(app);
-app.get("*",(req: Request,res:Response)=>{ // tất cả các route không giống ở admin và clint 
-    res.render("./client/pages/error/404.pug",{
-      pageTitle: "lỗi"
-    })
-  })
+// app.get("*",(req: Request,res:Response)=>{ // tất cả các route không giống ở admin và clint 
+//     res.render("./client/pages/error/404.pug",{
+//       pageTitle: "lỗi"
+//     })
+//   }) khi xong thì bật lại
 
 app.listen(port,()=>{
     console.log(`app listening on port ${port}`)

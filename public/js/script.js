@@ -1,6 +1,6 @@
 // aplayer
 const aplayer = document.querySelector("#aplayer")
-if(aplayer){
+if (aplayer) {
     let singer = aplayer.getAttribute("data-singer")
     singer = JSON.parse(singer); // chuyển từ json sang js
     let song = aplayer.getAttribute("data-song");
@@ -29,49 +29,52 @@ if(aplayer){
 
 // like
 const buttonLike = document.querySelector("[button-like]");
-if(buttonLike){
-    buttonLike.addEventListener("click",()=>{
-    const id = buttonLike.getAttribute("button-like");
-    const isActive = buttonLike.classList.contains("active")
-    const typeLike = isActive == false ? "like" : "dislike";
-    const link = `/songs/like/${typeLike}/${id}`;
-    const option = {
-        method: "PATCH "
-    }
-    fetch(link,option) // cần gửi method path truyền 2 tham số còn get thì cần link thôi
-        .then(res => res.json())
-        .then(data =>{
-            if(data.code == 200){
-                const span = buttonLike.querySelector("span");
-                span.innerHTML = `${data.like} thích`
-                buttonLike.classList.toggle("active");
-            }
-            
-        })
+if (buttonLike) {
+    buttonLike.addEventListener("click", () => {
+        const id = buttonLike.getAttribute("button-like");
+        const isActive = buttonLike.classList.contains("active")
+        const typeLike = isActive == false ? "like" : "dislike";
+        const link = `/songs/like/${typeLike}/${id}`;
+        const option = {
+            method: "PATCH "
+        }
+        fetch(link, option) // cần gửi method path truyền 2 tham số còn get thì cần link thôi
+            .then(res => res.json())
+            .then(data => {
+                if (data.code == 200) {
+                    const span = buttonLike.querySelector("span");
+                    span.innerHTML = `${data.like} thích`
+                    buttonLike.classList.toggle("active");
+                }
+
+            })
     })
 }
 // end like
 
 // favorite
- const buttonFavorite = document.querySelector("[button-favorite]");
- if(buttonFavorite){
-    buttonFavorite.addEventListener("click",()=>{
-    console.log(buttonFavorite);
+const listButtonFavorite = document.querySelectorAll("[button-favorite]");
+if (listButtonFavorite.length > 0) {
+    listButtonFavorite.forEach(buttonFavorite => {
+        buttonFavorite.addEventListener("click", () => {
+            console.log(buttonFavorite);
 
-        const id = buttonFavorite.getAttribute("button-favorite");
-        const isActive = buttonFavorite.classList.contains("active");
-        const typeFavorite = isActive? "unfavorite" : "favorite";
-        const link = `/songs/favorite/${typeFavorite}/${id}`;
-        const option = {
-            method : "PATCH"
-        }
-        fetch(link,option)
-            .then(res => res.json())
-            .then(data=>{
-                if(data.code == 200){
-                    buttonFavorite.classList.toggle("active");
-                }
-            })
-    })
+            const id = buttonFavorite.getAttribute("button-favorite");
+            const isActive = buttonFavorite.classList.contains("active");
+            const typeFavorite = isActive ? "unfavorite" : "favorite";
+            const link = `/songs/favorite/${typeFavorite}/${id}`;
+            const option = {
+                method: "PATCH"
+            }
+            fetch(link, option)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.code == 200) {
+                        buttonFavorite.classList.toggle("active");
+                    }
+                })
+        })
+    });
+
 }
 // end favorite
