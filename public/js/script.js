@@ -20,10 +20,25 @@ if (aplayer) {
 
     ap.on('play', function () {
         Avatar.style.animationPlayState = "running"
+        console.log("oke")
     });
     ap.on('pause', function () {
         Avatar.style.animationPlayState = "paused"
     });
+    // console.log(song)
+    ap.on("ended",function(){
+        console.log("kết thúc bài hát")
+        const link = `/songs/listen/${song._id}`
+        const option = {
+            method: "PATCH"
+        }
+        fetch(link,option)
+            .then(res => res.json())
+            .then(data =>{
+                const newListen = document.querySelector(".singer-detail .inner-listen span");
+                newListen.innerHTML= `${data.listen} lượt nghe`
+            })
+    })
 }
 // end aplayer
 
@@ -96,7 +111,7 @@ if(boxSearch){
             const list = boxSuggest.querySelector(".inner-list")
             const html = songs.map(song=>{
                 return `
-               <a class="inner-item" href="songs/detail/${song.slug}">
+               <a class="inner-item" href="/songs/detail/${song.slug}">
                     <div class="inner-image"><img src="${song.avatar}" /></div>
                     <div class="inner-info">
                         <div class="inner-title">${song.title}</div>

@@ -127,3 +127,26 @@ export const favorite = async(req: Request, res: Response)=>{
         message: "thành công!"
     })
 }
+
+// [GET] songs/listen/:id
+
+export const listen = async(req: Request,res: Response)=>{
+    const idSong = req.params.id;
+    const song = await Song.findOne({
+        _id: idSong,
+    })
+    let listen: number = song.listen + 1;
+    await Song.updateOne({
+        _id: idSong
+    },{
+        listen: listen,
+    })
+    const songNew = await Song.findOne({
+        _id: idSong
+    })
+    res.json({
+        code: 200,
+        message: "thành công!",
+        listen : songNew.listen
+    })
+}
