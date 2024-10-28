@@ -36,9 +36,9 @@ if (buttonLike) {
         const typeLike = isActive == false ? "like" : "dislike";
         const link = `/songs/like/${typeLike}/${id}`;
         const option = {
-            method: "PATCH "
+            method: "PATCH" // lưu ý không được thêm khoảng cách ở đây
         }
-        fetch(link, option) // cần gửi method path truyền 2 tham số còn get thì cần link thôi
+        fetch(link,option) // cần gửi method path truyền 2 tham số còn get thì cần link thôi
             .then(res => res.json())
             .then(data => {
                 if (data.code == 200) {
@@ -78,3 +78,41 @@ if (listButtonFavorite.length > 0) {
 
 }
 // end favorite
+
+// box suggest search 
+const boxSearch = document.querySelector(".box-search");
+if(boxSearch){
+    const input = boxSearch.querySelector("input[name='keyword']");
+    const boxSuggest = boxSearch.querySelector(".inner-suggest")
+    input.addEventListener("keyup",()=>{
+    const keyword = input.value ;
+    const link = `/search/suggest?keyword=${keyword}`
+    fetch(link)
+        .then(res => res.json())
+        .then(data =>{
+        const songs = data.songs;
+          if(songs.length > 0){
+            boxSuggest.classList.add("show")
+            const list = boxSuggest.querySelector(".inner-list")
+            const html = songs.map(song=>{
+                return `
+               <a class="inner-item" href="songs/detail/${song.slug}">
+                    <div class="inner-image"><img src="${song.avatar}" /></div>
+                    <div class="inner-info">
+                        <div class="inner-title">${song.title}</div>
+                        <div class="inner-singer"><i class="fa-solid fa-microphone-lines"></i> ${song.infoSinger.fullName}</div>
+                    </div>
+                </a>
+
+               
+                `
+            })
+            list.innerHTML = html.join("")
+          }else{
+            boxSuggest.classList.remove("show")
+          }
+        })
+    })
+}
+
+// end box suggest search

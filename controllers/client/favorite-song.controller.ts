@@ -21,6 +21,6 @@ export const index = async (req:Request,res: Response)=>{
     console.log(favoriteSongs);
     res.render("client/pages/favorite-songs/index.pug",{
         pageTitle: "Bài hát yêu thích",
-        favoriteSongs : favoriteSongs
+        favoriteSongs : favoriteSongs,
     })
 }
