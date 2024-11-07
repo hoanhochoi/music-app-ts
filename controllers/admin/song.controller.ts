@@ -3,6 +3,7 @@ import Song from "../../model/song.model";
 import Topic from "../../model/topic.model";
 import Singer from "../../model/singer.model";
 import PaginationHelper from "../../helpers/pagination";
+import { systemConfig } from "../../config/config";
 //[GET] admin/songs
 export const index = async (req:Request,res:Response)=>{
     // pagination
@@ -53,10 +54,17 @@ export const create = async (req: Request,res:Response)=>{
 // [POST] admin/songs/create
 
 export const createPost = async (req:Request,res:Response)=>{
-    const newsong = new Song(req.body);
+    const dataSong = {
+        title: req.body.title,
+        topicId: req.body.topicId,
+        singerId: req.body.singerId,
+        description: req.body.description,
+        status: req.body.status,
+        avatar: req.body.avatar,
+    }
+    const newsong = new Song(dataSong);
     newsong.save();
-    console.log(req.body);
-    res.send("oke")
+    res.redirect(`/${systemConfig.prefixAdmin}/songs`)
 }
 
 // [PATCH] admin/songs/change-status/:status/:id
@@ -72,9 +80,4 @@ export const changeStatus = async (req:Request,res: Response)=>{
     console.log(status)
     console.log(id)
     res.redirect("back");
-}
-
-// [GET] admin/songs/test
-export const test = (req:Request,res: Response)=>{
-    res.send("oke")
 }
