@@ -11,6 +11,10 @@ database.connect();
 const app: Express = express();
 const port: number | string = process.env.PORT || 3000;
 
+// body
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // nhúng file tĩnh
 app.use(express.static("public"))
 

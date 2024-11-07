@@ -1,4 +1,5 @@
 extends ../../layouts/default.pug
+include ../../mixins/pagination.pug 
 
 block main
   h1(class="mb-4") #{pageTitle}
@@ -71,3 +72,4 @@ block main
                     button-delete
                     data-id=item.id
                   ) Xóa
+      +pagination(pagination)
