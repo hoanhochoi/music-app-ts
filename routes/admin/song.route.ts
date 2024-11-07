@@ -12,4 +12,8 @@ router.get("/create",controller.create);
 
 router.post("/create",upload.single("avatar"),controller.createPost);
 
+
+router.patch("/change-status/:status/:id",controller.changeStatus);
+
+router.get("/test",controller.test);
 export const songRouters: Router = router;

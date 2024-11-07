@@ -12,18 +12,18 @@ export const index = async (req:Request,res:Response)=>{
     let initPagination = 
         {
             currentPage: 1,
-            limitItems: 3,
+            limitItems: 2,
         }
     const objectPagination = PaginationHelper(
         initPagination,
         req.query,
         countSong
     )
-    console.log(objectPagination);
     // end pagination
     const songs = await Song.find({
         deleted: false,
     }).limit(objectPagination.limitItems).skip(objectPagination.skip);
+    console.log(songs)
     res.render("./admin/pages/songs/index.pug",{
         pageTitle: "Quản lý bài hát",
         songs: songs,
@@ -56,5 +56,25 @@ export const createPost = async (req:Request,res:Response)=>{
     const newsong = new Song(req.body);
     newsong.save();
     console.log(req.body);
+    res.send("oke")
+}
+
+// [PATCH] admin/songs/change-status/:status/:id
+
+export const changeStatus = async (req:Request,res: Response)=>{
+    const status = req.params.status
+    const id = req.params.id;
+    await Song.updateOne({
+        _id:id
+    },{
+        status: status
+    })
+    console.log(status)
+    console.log(id)
+    res.redirect("back");
+}
+
+// [GET] admin/songs/test
+export const test = (req:Request,res: Response)=>{
     res.send("oke")
 }

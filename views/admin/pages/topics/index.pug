@@ -64,3 +64,9 @@ block main
                                         data-id=item.id
                                     ) Xóa
             +pagination(pagination)
+            form(
+                action=""
+                method="POST"
+                id="form-change-status"
+                data-path=`${prefixAdmin}/topics/change-status`
+            )
