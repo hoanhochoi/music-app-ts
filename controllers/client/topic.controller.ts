@@ -4,7 +4,8 @@ import Topic from "../../model/topic.model"
 // [GET] topics
 export const  topics = async (req: Request, res: Response)=>{
     const topics = await Topic.find({
-        deleted: false,  
+        deleted: false,
+        status: "active"  
     })
     // console.log(topics)
     

@@ -4,7 +4,6 @@ import PaginationHelper from "../../helpers/pagination";
 
 // [GET] /admin/topics
 export const index = async (req:Request,res: Response)=>{
-
     const countTopic = await Topic.countDocuments({
         deleted: false,
     })
@@ -17,11 +16,25 @@ export const index = async (req:Request,res: Response)=>{
     const topics = await Topic.find({
         deleted: false,
     }).limit(objectPagination.limitItems).skip(objectPagination.skip);
-    console.log(objectPagination)
-    // console.log(topics);
+    for (const item of topics) {
+        if(item.status == "active")
+            item["TT"] = 1
+        else
+            item["tt"] =2
+    }
+    console.log(topics)
     res.render("admin/pages/topics/index",{
         pageTitle: "Quản lý chủ đề",
         topics: topics,
         pagination: objectPagination
     })
+}
+
+// [PATCH] admin/topics/change-status/:status/:id
+export const changeStatus = async (req: Request, res: Response)=>{
+    const status = req.params.status;
+    const id = req.params.id;
+    console.log(status,id)
+    await Topic.updateOne({_id:id},{status:status})
+    res.redirect("back")
 }

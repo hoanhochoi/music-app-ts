@@ -25,6 +25,15 @@ export const index = async (req:Request,res:Response)=>{
         deleted: false,
     }).limit(objectPagination.limitItems).skip(objectPagination.skip);
     console.log(songs)
+    const newSongs = songs.forEach(item=>{
+        if(item.status == "active"){
+            item["trangThai"] = "Hoạt động"
+        }else{
+            item["trangThai"] = "Dừng hoạt động"
+        }
+    })
+    console.log(newSongs)
+ 
     res.render("./admin/pages/songs/index.pug",{
         pageTitle: "Quản lý bài hát",
         songs: songs,

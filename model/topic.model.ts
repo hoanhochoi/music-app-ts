@@ -6,6 +6,7 @@ const topicSchema = new mongoose.Schema(
         avatar: String,
         description: String,
         slug: String,
+        status: String,
         deleted: {
             type: Boolean,
             default: false,
