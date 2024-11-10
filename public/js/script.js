@@ -7,11 +7,14 @@ if (aplayer) {
     song = JSON.parse(song);
     const ap = new APlayer({
         container: document.getElementById('aplayer'),
+        lrcType: 1,
         audio: [{
             name: song.title,
             artist: singer.fullName,
             url: song.audio,
             cover: song.avatar,
+            lrc: song.lyrics
+
         }],
         autoplay: true,
     });
@@ -26,17 +29,17 @@ if (aplayer) {
         Avatar.style.animationPlayState = "paused"
     });
     // console.log(song)
-    ap.on("ended",function(){
+    ap.on("ended", function () {
         console.log("kết thúc bài hát")
         const link = `/songs/listen/${song._id}`
         const option = {
             method: "PATCH"
         }
-        fetch(link,option)
+        fetch(link, option)
             .then(res => res.json())
-            .then(data =>{
+            .then(data => {
                 const newListen = document.querySelector(".singer-detail .inner-listen span");
-                newListen.innerHTML= `${data.listen} lượt nghe`
+                newListen.innerHTML = `${data.listen} lượt nghe`
             })
     })
 }
@@ -53,7 +56,7 @@ if (buttonLike) {
         const option = {
             method: "PATCH" // lưu ý không được thêm khoảng cách ở đây
         }
-        fetch(link,option) // cần gửi method path truyền 2 tham số còn get thì cần link thôi
+        fetch(link, option) // cần gửi method path truyền 2 tham số còn get thì cần link thôi
             .then(res => res.json())
             .then(data => {
                 if (data.code == 200) {
@@ -96,21 +99,21 @@ if (listButtonFavorite.length > 0) {
 
 // box suggest search 
 const boxSearch = document.querySelector(".box-search");
-if(boxSearch){
+if (boxSearch) {
     const input = boxSearch.querySelector("input[name='keyword']");
     const boxSuggest = boxSearch.querySelector(".inner-suggest")
-    input.addEventListener("keyup",()=>{
-    const keyword = input.value ;
-    const link = `/search/suggest?keyword=${keyword}`
-    fetch(link)
-        .then(res => res.json())
-        .then(data =>{
-        const songs = data.songs;
-          if(songs.length > 0){
-            boxSuggest.classList.add("show")
-            const list = boxSuggest.querySelector(".inner-list")
-            const html = songs.map(song=>{
-                return `
+    input.addEventListener("keyup", () => {
+        const keyword = input.value;
+        const link = `/search/suggest?keyword=${keyword}`
+        fetch(link)
+            .then(res => res.json())
+            .then(data => {
+                const songs = data.songs;
+                if (songs.length > 0) {
+                    boxSuggest.classList.add("show")
+                    const list = boxSuggest.querySelector(".inner-list")
+                    const html = songs.map(song => {
+                        return `
                <a class="inner-item" href="/songs/detail/${song.slug}">
                     <div class="inner-image"><img src="${song.avatar}" /></div>
                     <div class="inner-info">
@@ -121,12 +124,12 @@ if(boxSearch){
 
                
                 `
+                    })
+                    list.innerHTML = html.join("")
+                } else {
+                    boxSuggest.classList.remove("show")
+                }
             })
-            list.innerHTML = html.join("")
-          }else{
-            boxSuggest.classList.remove("show")
-          }
-        })
     })
 }
 
