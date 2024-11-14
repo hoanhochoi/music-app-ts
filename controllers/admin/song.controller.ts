@@ -65,10 +65,10 @@ export const create = async (req: Request, res: Response) => {
 export const createPost = async (req: Request, res: Response) => {
     let avatar = ""
     let audio = ""
-    if(req.body.avatar){
+    if (req.body.avatar) {
         avatar = req.body.avatar[0];
     }
-    if(req.body.audio){
+    if (req.body.audio) {
         audio = req.body.audio[0];
     }
     const dataSong = {
@@ -101,7 +101,7 @@ export const changeStatus = async (req: Request, res: Response) => {
     res.redirect("back");
 }
 
-export const changeMulti = async (req: Request, res, Response) => {
+export const changeMulti = async (req: Request, res: Response) => {
     const ids = req.body.ids.split(", ");
     const type = req.body.type;
     const updatedAt = new Date();
@@ -109,13 +109,58 @@ export const changeMulti = async (req: Request, res, Response) => {
     console.log(ids)
     switch (type) {
         case "active":
-            await Song.updateMany({ _id: { $in: ids } }, { status: "active",updatedAt:updatedAt})
+            await Song.updateMany({ _id: { $in: ids } }, { status: "active", updatedAt: updatedAt })
             break;
         case "inactive":
-            await Song.updateMany({ _id: { $in: ids } }, { status: "inactive",updatedAt:updatedAt })
+            await Song.updateMany({ _id: { $in: ids } }, { status: "inactive", updatedAt: updatedAt })
             break;
         default:
             break;
     }
     res.redirect("back");
+}
+
+
+export const edit = async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const song = await Song.findOne({
+        _id: id,
+        deleted: false,
+    });
+    const topics = await Topic.find({
+        deleted: false,
+    }).select("title")
+    const singers = await Singer.find(
+        {
+            deleted: false,
+        }
+    ).select("fullName")
+    res.render("admin/pages/songs/edit.pug",{
+        pageTitle: "Chỉnh sửa bài hát",
+        song: song,
+        singers: singers,
+        topics:topics
+    })
+}
+
+// [PATCH] admin/songs/edit/:id
+export const editPatch = async (req: Request, res: Response) => {
+    console.log(req.body);
+   const id = req.params.id;
+    const dataSong = {
+        title: req.body.title,
+        topicId: req.body.topicId,
+        singerId: req.body.singerId,
+        description: req.body.description,
+        status: req.body.status,
+        lyrics: req.body.lyrics
+    }
+    if (req.body.avatar) {
+        req.body.avatar = req.body.avatar[0];
+    }
+    if (req.body.audio) {
+        req.body.audio = req.body.audio[0];
+    }
+    await Song.updateOne({_id:id},dataSong);
+    res.redirect(`back`)
 }
