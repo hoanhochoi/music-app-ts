@@ -1,6 +1,6 @@
 import express,{Express,Response,Request} from "express"
 import dotenv from "dotenv"
-import path  from "path"; // path là thư viện có sẵn nodejs
+import path, { dirname }  from "path"; // path là thư viện có sẵn nodejs
 import methodOverride from "method-override"
 import * as database from "./config/database";
 import clientRoutes from "./routes/client/index.route";
@@ -17,12 +17,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // nhúng file tĩnh
-app.use(express.static("public"))
+app.use(express.static(`${dirname}/public`))
 
 // method override
 app.use(methodOverride("_method"))
 
-app.set("views","./views")
+app.set("views",`${dirname}/views`)
 app.set("view engine","pug")
 
 // tinyMCE
