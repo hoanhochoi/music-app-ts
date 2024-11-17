@@ -1,4 +1,4 @@
-import { Router } from "express";
+ import { Router } from "express";
 import multer from "multer";
 import * as controller from "../../controllers/admin/song.controller";
 import * as uploadCloud from "../../middlewares/admin/uploadCloud.middleware"

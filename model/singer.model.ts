@@ -8,7 +8,7 @@ const singerSchema = new mongoose.Schema(
         slug: String,
         deleted: {
             type: Boolean,
-            defualt: false,
+            default: false,
         }
     },
     {
